@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Military Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #232323;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        #quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .question-card {
+            display: none;
+            border: 1px solid #444;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .question-card.active {
+            display: block;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        label input[type="radio"] {
+            margin-right: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1 style="text-align: center;">Military Classification Quiz</h1>
+        <div class="question-card active" id="question-card-1">
+            <p class="question">1. Are you comfortable with long deployments at sea?</p>
+            <label><input type="radio" name="q1" value="navy"> Yes</label>
+            <label><input type="radio" name="q1" value="army"> No</label>
+            <button onclick="nextQuestion(1)">Next</button>
+        </div>
+
+        <!-- Add more question cards here -->
+
+        <button id="submit-button" onclick="submitQuiz()" style="display: none; background-color: #28a745;">Submit</button>
+        <p id="result" style="text-align: center;"></p>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+
+        function nextQuestion(questionNumber) {
+            const currentCard = document.getElementById(`question-card-${questionNumber}`);
+            currentCard.classList.remove('active');
+            
+            currentQuestion++;
+            
+            const nextCard = document.getElementById(`question-card-${currentQuestion}`);
+            if (nextCard) {
+                nextCard.classList.add('active');
+            } else {
+                const submitButton = document.getElementById('submit-button');
+                submitButton.style.display = 'block';
+            }
+        }
+
+        function submitQuiz() {
+            const answers = {};
+            for (let i = 1; i <= 21; i++) {
+                const selectedOption = document.querySelector(`#question-card-${i} input[name="q${i}"]:checked`);
+                if (selectedOption) {
+                    answers[`q${i}`] = selectedOption.value;
+                }
+            }
+
+            const classification = {
+                army: 0,
+                airforce: 0,
+                navy: 0,
+            };
+
+            // Calculate classification based on answers here
+
+            const resultElement = document.getElementById('result');
+            const maxBranch = Object.keys(classification).reduce((a, b) => classification[a] > classification[b] ? a : b);
+            resultElement.innerText = `Based on your answers, you are classified into the ${maxBranch} branch of the military.`;
+        }
+    </script>
+</body>
+</html>
